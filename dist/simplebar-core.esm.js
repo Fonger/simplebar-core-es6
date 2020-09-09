@@ -7,7 +7,9 @@
  * Under MIT License
  */
 
-import { throttle, debounce, memoize } from 'lodash-es';
+import throttle from 'lodash/throttle';
+import debounce from 'lodash/debounce';
+import memoize from 'lodash/memoize';
 import canUseDOM from 'can-use-dom';
 
 let cachedScrollbarWidth = null;
