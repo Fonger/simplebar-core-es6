@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "can-use-dom": "^0.1.0",
-    "lodash-es": "^4.17.15"
+    "lodash": "^4.17.20"
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.10.1",

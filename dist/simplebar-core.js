@@ -8,8 +8,8 @@
  */
 
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('lodash-es'), require('can-use-dom')) :
-  typeof define === 'function' && define.amd ? define(['lodash-es', 'can-use-dom'], factory) :
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('lodash'), require('can-use-dom')) :
+  typeof define === 'function' && define.amd ? define(['lodash', 'can-use-dom'], factory) :
   (global = global || self, global.SimpleBar = factory(global._, global.canUseDOM));
 }(this, (function (lodashEs, canUseDOM) { 'use strict';
 
