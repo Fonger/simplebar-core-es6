@@ -1,6 +1,5 @@
 import throttle from 'lodash/throttle';
 import debounce from 'lodash/debounce';
-import memoize from 'lodash/lodash';
 import canUseDOM from 'can-use-dom';
 import scrollbarWidth from './scrollbar-width';
 import { getElementWindow, getElementDocument } from './helpers';
@@ -87,8 +86,6 @@ export default class SimpleBar {
     this.onStopScrolling = debounce(this.onStopScrolling, this.stopScrollDelay);
     this.onMouseEntered = debounce(this.onMouseEntered, this.stopScrollDelay);
 
-    SimpleBar.getRtlHelpers = memoize(SimpleBar.getRtlHelpers);
-
     this.init();
   }
 
@@ -103,6 +100,7 @@ export default class SimpleBar {
    * Directly inspired by @KingSora's OverlayScrollbars https://github.com/KingSora/OverlayScrollbars/blob/master/js/OverlayScrollbars.js#L1634
    */
   static getRtlHelpers() {
+    if (SimpleBar.rtlHelpers) return SimpleBar.rtlHelpers;
     const dummyDiv = document.createElement('div');
     dummyDiv.innerHTML =
       '<div class="simplebar-dummy-scrollbar-size"><div></div></div>';
@@ -120,14 +118,17 @@ export default class SimpleBar {
     scrollbarDummyEl.scrollLeft = -999;
     const dummyChildOffsetAfterScroll = SimpleBar.getOffset(dummyChild);
 
-    return {
+    SimpleBar.rtlHelpers = {
       // determines if the scrolling is responding with negative values
       isScrollOriginAtZero: dummyContainerOffset.left !== dummyChildOffset.left,
       // determines if the origin scrollbar position is inverted or not (positioned on left or right)
       isScrollingToNegative:
         dummyChildOffset.left !== dummyChildOffsetAfterScroll.left,
     };
+    return SimpleBar.rtlHelpers;
   }
+
+  static rtlHelpers = null;
 
   static defaultOptions = {
     autoHide: true,

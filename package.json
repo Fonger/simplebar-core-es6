@@ -50,6 +50,5 @@
       "prettier-eslint --write",
       "git add"
     ]
-  },
-  "gitHead": "d2645802e95d5bdb135927fa2247a58ce8ab0457"
+  }
 }

@@ -9,7 +9,6 @@
 
 import throttle from 'lodash/throttle';
 import debounce from 'lodash/debounce';
-import memoize from 'lodash/lodash';
 import canUseDOM from 'can-use-dom';
 
 let cachedScrollbarWidth = null;
@@ -326,7 +325,6 @@ class SimpleBar {
     });
     this.onStopScrolling = debounce(this.onStopScrolling, this.stopScrollDelay);
     this.onMouseEntered = debounce(this.onMouseEntered, this.stopScrollDelay);
-    SimpleBar.getRtlHelpers = memoize(SimpleBar.getRtlHelpers);
     this.init();
   }
   /**
@@ -342,6 +340,7 @@ class SimpleBar {
 
 
   static getRtlHelpers() {
+    if (SimpleBar.rtlHelpers) return SimpleBar.rtlHelpers;
     const dummyDiv = document.createElement('div');
     dummyDiv.innerHTML = '<div class="simplebar-dummy-scrollbar-size"><div></div></div>';
     const scrollbarDummyEl = dummyDiv.firstElementChild;
@@ -352,12 +351,13 @@ class SimpleBar {
     const dummyChildOffset = SimpleBar.getOffset(dummyChild);
     scrollbarDummyEl.scrollLeft = -999;
     const dummyChildOffsetAfterScroll = SimpleBar.getOffset(dummyChild);
-    return {
+    SimpleBar.rtlHelpers = {
       // determines if the scrolling is responding with negative values
       isScrollOriginAtZero: dummyContainerOffset.left !== dummyChildOffset.left,
       // determines if the origin scrollbar position is inverted or not (positioned on left or right)
       isScrollingToNegative: dummyChildOffset.left !== dummyChildOffsetAfterScroll.left
     };
+    return SimpleBar.rtlHelpers;
   }
 
   static getOffset(el) {
@@ -785,6 +785,7 @@ class SimpleBar {
   }
 
 }
+SimpleBar.rtlHelpers = null;
 SimpleBar.defaultOptions = {
   autoHide: true,
   forceVisible: false,
